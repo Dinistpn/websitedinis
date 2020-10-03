@@ -1,0 +1,83 @@
+{% extends "prelogin-layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+        <h3>Welcome o this page to see the gallery please... <a href ="/login">Login</a></h3>
+                <small id="bookHelp" class="form-text text-muted">To see the galleries and smooth music please login, is totally free and does not has publicity.</small>
+           </br>
+            <h3 id="sec1"> My favorite Travels</h3>
+            <p>In this website I present some of the special places I visited and why I consider this places to be <br/>
+            some of the best places I visited until now, also some smooth music made by me. 
+            
+        </p>
+            <img src ="static/lar.jpg" width = "60%" padding-bottom: 30px;>
+            <ol>
+                    <li> <a href="#sec1"> I Go to </a> My favorite Travels </li>
+                    <li> <a href="#sec2"> II Go to </a> Give you contribute to this website </li>
+                    <li> <a href="#sec3"> III Go to </a> The end </li>
+                
+                </ol> 
+                <h1 style=color:purple;text-align:center-left;> Before you travel</h1>
+            
+                <div class="fe"> <p> Travels can be the most wonderful thing in the world,
+                but as everything uncertain involves some stress, to deal with this information is key. 
+                With so many websites and feedback from other travelers, there is some tools to get 
+                 information before the travel to make is a decision about the destination 
+                and above all some of the things he may find when traveling to the chosen destination.</br> 
+                Bellow, there is some useful popular websites:
+                </p>
+                <ul>
+                    <li> <a href ="https://www.tripadvisor.com"> https://www.tripadvisor.com</a> </li>
+                    <li> <a href ="https://www.booking.com"> https://www.booking.com</a> </li>
+                    <li> <a href ="https://www.trivago.com"> https://www.trivago.com</a> </li>
+                </ul>
+                
+                
+                
+                Some important contacts for EU citizens when traveling
+                <ol>
+                    
+                    <li> EU website with information about traveling-
+                    <a href ="https://europa.eu/european-union/life/travel-tourism_en">https://europa.eu/european-union/life/travel-tourism_en</a> </li>
+                    
+                    <li> EU website with information about countries in EU-
+                    <a href ="https://europa.eu/european-union/about-eu/countries_en">https://europa.eu/european-union/about-eu/countries_en</a> </li>
+                    
+                        <ul> 
+                            <li> Freephone - 00 800 6 7 8 9 10 11</li>
+                        </ul>
+                        
+                    <li> EU website with information about contact points in each country-
+                    <a href ="https://europa.eu/european-union/contact/meet-us_en">
+                    https://europa.eu/european-union/contact/meet-us_en</a> </li>
+                
+                </ol>
+                
+                </div>
+                <span></span>
+                
+                <img src ="static/saso.jpg" width = "60%" padding-bottom: 30px;>
+                </br>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      The travel
+                    </div>
+                    <div class="col-sm">
+                      is as part of you
+                    </div>
+                    <div class="col-sm">
+                      as the need to see.
+                    </div>
+                  </div>
+                </div>
+                <div class="glyphicon glyphicon-euro"> .......................................</i>
+                <div class="rer">Just the</div>
+                <div class="ter">Journey </div>
+                <div class="der">Begining</div>
+                </br>
+        <h3 id="sec3"> Thank you for visiting this website, hope you enjoyed!!!</h3>
+{% endblock %}

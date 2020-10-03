@@ -1,0 +1,126 @@
+{% extends "prelogin-layout.html" %}
+
+{% block title %}
+    Photo ID
+{% endblock %}
+
+{% block content %}
+    
+    <div class="row book-container">  
+        <div class="col-sm-4">
+         <p>
+        <button type="button" onclick="zoomin()">Zoom In</button>
+        <button type="button" onclick="zoomout()">Zoom Out</button>
+        </p>
+            <img src="/static/{{gallery[0]['idphoto']}}.jpg" id ="zoom" width="450px">             
+        </div>
+        
+        <!--GOODREADS REVIEWS -->
+
+    </div>
+        <div class="row book-container">
+            <img class="mb-3" src="../static/goodreads.jpg" alt="Goodreads" width="200" height="45">
+            <h5>Nº of Ratings: {{gallery[0]['idphoto']}}</h5>
+            <h5>Average Rating: {{gallery[0]['idphoto']}}</h5>
+        </div>
+    <div class="dropdown-divider"></div>
+
+    <h5 class="alert alert-warning">Users Reviews</h4>
+    <h5>Make your own review!</h5>
+    
+    <div>
+        <!-- REVIEW FORM -->
+        
+        <form method="POST" class="form-border" style="padding:5px; border-style: inset ; border-color:blue">
+            <div class="form-row">
+                <div class="form-group col-sm">
+                    <label for="rating">Rate this book</label>
+                    <select id="rating" name="rating" class="form-control" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option selected value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            
+                <div class="form-group col-sm-6" style="margin-top:20px;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Say something</span>
+                        </div>
+                        <textarea name="comment" id="comment" class="form-control" rows="1" required></textarea>
+                    </div>
+                </div>
+                <div class="form-group col-sm" style="margin-top:30px;">
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+               
+            </div>
+        </form>
+       
+        <!-- REVIEW LIST -->
+        <div id="userReviews">
+            <h2></h2>
+            {% for review in reviews %}
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1" style="color:#1f94c0">User: {{review['username']}}</h6>
+                    </div>
+                    <p class="mb-1">Review: {{review['comment']}}</p>
+                    <p class="mb-2">Rated: {{review['rating']}}</p>
+                    <small>Date: {{review['timedate']}}</small>
+                </a>
+                <div class="dropdown-divider"></div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    <script>
+    function zoomin(){
+
+        var myImg = document.getElementById("zoom");
+
+        var imgI = myImg.clientWidth;
+
+        if(imgI == 600){
+
+            alert("Maximum zoom-in level reached.");
+
+        } else{
+
+            myImg.style.width = (imgI + 50) + "px";
+
+        } 
+
+    }
+
+    function zoomout(){
+
+        var myImg = document.getElementById("zoom");
+
+        var imgI = myImg.clientWidth;
+
+        if(imgI == 300){
+
+            alert("Maximum zoom-out level reached.");
+
+        } else{
+
+            myImg.style.width = (imgI - 50) + "px";
+
+        }
+
+    }
+    function goBack() {
+        window.history.back();
+    }
+    function goForward() {
+        window.history.forward();
+    }
+    
+    </script>
+    
+{% endblock %}
