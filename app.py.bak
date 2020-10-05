@@ -12,39 +12,39 @@ import requests
 import datetime
 from datetime import datetime
 
-websitedinis = Flask(__name__)
+app = Flask(__name__)
 
 def before_request():
-    websitedinis.jinja_env.cache = {}
-    websitedinis.before_request(before_request)
+    app.jinja_env.cache = {}
+    app.before_request(before_request)
 
-if not os.getenv("DATABASE_URL"):
+if not os.getenv('DATABASE_URL', ''):
     raise RuntimeError("DATABASE_URL is not set")
 
 
-websitedinis.secret_key = 'replace later'
-websitedinis.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-websitedinis.config['SQLALCHEMY_DATABASE_URI']=(os.getenv("DATABASE_URL"))
-websitedinis.config["SESSION_TYPE"] = "filesystem"
+app.secret_key = 'replace later'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL'))
+app.config["SESSION_TYPE"] = "filesystem"
 
-db = SQLAlchemy(websitedinis)
-engine = create_engine(os.getenv("DATABASE_URL"))
+db = SQLAlchemy(app)
+engine = create_engine(os.getenv('DATABASE_URL'))
 exe = scoped_session(sessionmaker(bind=engine))
 
-login = LoginManager(websitedinis)
-login.init_app(websitedinis)
+login = LoginManager(app)
+login.init_app(app)
 
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))  
 
-@websitedinis.route("/")    
+@app.route("/")    
 def index():
     """ Show search box """
         
     return render_template("index.html")
 
-@websitedinis.route("/registration", methods=['GET', 'POST'])
+@app.route("/registration", methods=['GET', 'POST'])
 def registration():
 
 
@@ -65,7 +65,7 @@ def registration():
             
     return render_template( "registration.html", form=reg_form)
 
-@websitedinis.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
 
     username = request.form.get("username")
@@ -87,7 +87,7 @@ def login():
 
     return render_template("login.html", form=login_form)
 
-@websitedinis.route("/restrict", methods=['GET', 'POST'])    
+@app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
     """ Show search box """
     username = session["username"]
@@ -131,7 +131,7 @@ def restrict():
     return render_template("restrict.html", username=username, landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
-@websitedinis.route("/draws", methods=['GET'])
+@app.route("/draws", methods=['GET'])
 def draws():  
     
     username = session["username"]
@@ -141,7 +141,7 @@ def draws():
         
     return render_template("draws.html", username=username)
     
-@websitedinis.route("/results", methods=['GET'])
+@app.route("/results", methods=['GET'])
 def results():
 
     username = session["username"]
@@ -176,7 +176,7 @@ def results():
     
     return render_template("results.html", gallery=gallery, username=username)
     
-@websitedinis.route("/logout", methods=['GET' ])
+@app.route("/logout", methods=['GET' ])
 def loggedout():
     
     session.clear()
@@ -184,7 +184,7 @@ def loggedout():
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
     
-@websitedinis.route("/image/<idphoto>", methods=['GET','POST'])
+@app.route("/image/<idphoto>", methods=['GET','POST'])
 def image(idphoto):
     
     
@@ -263,5 +263,5 @@ def image(idphoto):
     
 if __name__ == "__main__":
 
-    websitedinis.run(debug=True)
+    app.run(debug=True)
 

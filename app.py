@@ -18,17 +18,17 @@ def before_request():
     app.jinja_env.cache = {}
     app.before_request(before_request)
 
-if not os.getenv("DATABASE_URL"):
+if not os.getenv('DATABASE_URL', ''):
     raise RuntimeError("DATABASE_URL is not set")
 
 
 app.secret_key = 'replace later'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv("DATABASE_URL"))
+app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', ''))
 app.config["SESSION_TYPE"] = "filesystem"
 
 db = SQLAlchemy(app)
-engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(os.getenv('DATABASE_URL', ''))
 exe = scoped_session(sessionmaker(bind=engine))
 
 login = LoginManager(app)
