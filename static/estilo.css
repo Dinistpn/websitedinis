@@ -52,8 +52,6 @@ padding: .5rem;
 }
 
     #image{ 
-        width: 580px;
-        height: 100px;
         border:4px solid black;
         margin:10px auto 0px auto;
         background-color: #6AE66A;
@@ -97,14 +95,19 @@ padding: .5rem;
     }
     
     .card2{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
         width: 16rem; 
         float:left; 
         margin: 1px;
-        background-color: #141313;
+        background-color: #d4d9d5;
     }
     
     .card-body2{
-        color: #fffafa;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
         height: 12rem;
         margin: 3px;
         margin:3px;
@@ -114,7 +117,7 @@ padding: .5rem;
       position: absolute;
       top: 10px;
       right: 15px;
-      color: white;
+      color: black;
       font-size: 35px;
       cursor: pointer;
     }

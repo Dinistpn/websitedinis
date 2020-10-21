@@ -10,6 +10,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.session import Session
 import requests
 import datetime
+import secrets
 from datetime import datetime
 
 app = Flask(__name__)
@@ -21,8 +22,8 @@ def before_request():
 if not os.getenv('DATABASE_URL', ''):
     raise RuntimeError("DATABASE_URL is not set")
 
-
-app.secret_key = 'replace later'
+secret_key = secrets.token_hex(16)
+app.config['SECRET_KEY'] = secret_key
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', ''))
 app.config["SESSION_TYPE"] = "filesystem"

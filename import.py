@@ -50,7 +50,27 @@ curr.execute("INSERT INTO gallery (idphoto,location, URL, weather, landscape) Va
         ('50285529912','Aveiro','flickr.com/photos/189372031@N02/50285529912/in/dateposted-public/','Sun','Sea'),\
         ('50285529942','Aveiro','flickr.com/photos/189372031@N02/50285529942/in/dateposted-public/','Sun','Sea'),\
         ('50285530012','Aveiro','flickr.com/photos/189372031@N02/50285530012/in/dateposted-public/','Sun','Sea'),\
-        ('50285530027','Aveiro','flickr.com/photos/189372031@N02/50285530027/in/dateposted-public/','Sun','Sea');")
+        ('50285530027','Aveiro','flickr.com/photos/189372031@N02/50285530027/in/dateposted-public/','Sun','Sea'),\
+        ('50513399783','Gdansk','flickr.com/photos/189372031@N02/50513399783/in/dateposted-public/','Sun','Baltic Sea'),\
+        ('50514110721','Vienna','flickr.com/photos/189372031@N02/50514110721/in/dateposted-public/','Clouds','Culture'),\
+        ('50514110626','Vienna','flickr.com/photos/189372031@N02/50514110626/in/dateposted-public/','Clouds','Culture'),\
+        ('50514110791','Vienna','flickr.com/photos/189372031@N02/50514110791/in/dateposted-public/','Clouds','Culture'),\
+        ('50514110726','Vienna','flickr.com/photos/189372031@N02/50514110726/in/dateposted-public/','Clouds','Culture'),\
+        ('50514278137','Vienna','flickr.com/photos/189372031@N02/50514278137/in/dateposted-public/','Clouds','Culture'),\
+        ('50513399323','Vienna','flickr.com/photos/189372031@N02/50513399323/in/dateposted-public/','Clouds','Culture'),\
+        ('50513399193','Vienna','flickr.com/photos/189372031@N02/50513399193/in/dateposted-public/','Clouds','Culture'),\
+        ('50514277812','Vienna','flickr.com/photos/189372031@N02/50514277812/in/dateposted-public/','Clouds','Culture'),\
+        ('50514110171','Gdansk','flickr.com/photos/189372031@N02/50514110171/in/dateposted-public/','Sun','Baltic Sea'),\
+        ('50514109671','Malbork','flickr.com/photos/189372031@N02/50514109671/in/dateposted-public/','Rain','Castle'),\
+        ('50514277722','Malbork','flickr.com/photos/189372031@N02/50514277722/in/dateposted-public/','Rain','Castle'),\
+        ('50514109651','Aveiro','flickr.com/photos/189372031@N02/50514109651/in/dateposted-public/','Sun','River'),\
+        ('50514109696','Venice','flickr.com/photos/189372031@N02/50514109696/in/dateposted-public/','Sun','Lagoon'),\
+        ('50513398573','Budapest','flickr.com/photos/189372031@N02/50513398573/in/dateposted-public/','Rain','Culture'),\
+        ('50513398533','Budapest','flickr.com/photos/189372031@N02/50513398533/in/dateposted-public/','Rain','Culture'),\
+        ('50513398528','Budapest','flickr.com/photos/189372031@N02/50513398528/in/dateposted-public/','Rain','Culture'),\
+        ('50514277077','Budapest','flickr.com/photos/189372031@N02/50514277077/in/dateposted-public/','Rain','Culture'),\
+        ('50513398513','Zakopane','flickr.com/photos/189372031@N02/50513398513/in/dateposted-public/','Rain','Montains');")
+
 print("gallery update")    
 
 curr.execute("CREATE TABLE reviews (id SERIAL PRIMARY KEY, \

@@ -7,8 +7,8 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 curr = conn.cursor()
 
 curr.execute("CREATE TABLE users (id serial PRIMARY KEY, \
-                                    location VARCHAR ( 50 ) NOT NULL,\
-                                    landscape VARCHAR ( 50 ) NOT NULL);")
+                                    username VARCHAR ( 50 ) NOT NULL,\
+                                    password VARCHAR ( 50 ) NOT NULL);")
 print("users created")                                    
 
 
