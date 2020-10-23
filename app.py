@@ -24,7 +24,7 @@ if not os.getenv('DATABASE_URL', ''):
 
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', ''))
 app.config["SESSION_TYPE"] = "filesystem"
 
