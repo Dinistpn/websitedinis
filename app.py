@@ -11,6 +11,8 @@ from sqlalchemy.orm.session import Session
 import requests
 import datetime
 import secrets
+import sys
+import logging
 from datetime import datetime
 
 app = Flask(__name__)
@@ -34,6 +36,9 @@ exe = scoped_session(sessionmaker(bind=engine))
 
 login = LoginManager(app)
 login.init_app(app)
+
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 @login.user_loader
 def load_user(id):
@@ -265,4 +270,3 @@ def image(idphoto):
 if __name__ == "__main__":
 
     app.run(debug=True)
-
