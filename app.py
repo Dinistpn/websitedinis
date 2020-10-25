@@ -71,15 +71,22 @@ def registration():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
 
-    username = request.form.get("username")
+    usernameF = request.form.get("username")
     login_form= LoginForm()
+    
+    if session.get('username'):
+        if session['username'] == True:
+            return redirect(url_for('logout'))
+    #if username is None:
+        
+     #   return redirect(url_for('logout'))
     
     if login_form.validate_on_submit():
         
         
         user_object = User.query.filter_by(username = login_form.username.data).first()
         login_user(user_object)
-        session['username'] = username
+        session['username'] = usernameF
         session.permanent = True
         return redirect(url_for('restrict'))
         
@@ -90,10 +97,10 @@ def login():
 
     return render_template("login.html", form=login_form)
 
-@app.route("/restrict", methods=['GET', 'POST'])    
+@app.route("/restrict", methods=['GET'])    
 def restrict():
     """ Show search box """
-    username = session["username"]
+    username = session.get('username')
     
     if not current_user.is_authenticated:
         flash('Please login', 'you need to login first')
@@ -137,7 +144,7 @@ def restrict():
 @app.route("/draws", methods=['GET'])
 def draws():  
     
-    username = session["username"]
+    username = session.get('username')
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -147,7 +154,7 @@ def draws():
 @app.route("/results", methods=['GET'])
 def results():
 
-    username = session["username"]
+    username = session.get('username')
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -187,11 +194,11 @@ def loggedout():
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
     
-@app.route("/image/<idphoto>", methods=['GET','POST'])
+@app.route("/image/<idphoto>", methods=['GET'])
 def image(idphoto):
     
     
-    username = session["username"]
+    username = session.get('username')
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
