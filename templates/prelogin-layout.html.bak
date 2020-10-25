@@ -105,7 +105,7 @@
     </ul>
 
     <ul class="navbar-nav mr-auto">
-            <audio id="audio1" src="static/myS1.mp3"></audio>
+            <audio id="audio1" src="static/myS3.mp3"></audio>
             <audio id="audio2" src="static/myS2.mp3"></audio>
             <button id="controls">Play track 1</button>
             <button onclick="pause()" type="button">Pause</button>  

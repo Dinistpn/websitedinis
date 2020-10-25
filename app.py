@@ -11,8 +11,6 @@ from sqlalchemy.orm.session import Session
 import requests
 import datetime
 import secrets
-import sys
-import logging
 from datetime import datetime
 
 app = Flask(__name__)
@@ -37,8 +35,7 @@ exe = scoped_session(sessionmaker(bind=engine))
 login = LoginManager(app)
 login.init_app(app)
 
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
+
 
 @login.user_loader
 def load_user(id):
@@ -47,9 +44,9 @@ def load_user(id):
 @app.route("/")    
 def index():
     """ Show search box """
-        
+ 
     return render_template("index.html")
-
+    
 @app.route("/registration", methods=['GET', 'POST'])
 def registration():
 
@@ -266,7 +263,7 @@ def image(idphoto):
         reviews = results.fetchall()
         
         return render_template("image.html", gallery=gallery, username=username, reviews=reviews)
-    
+
 if __name__ == "__main__":
 
     app.run(debug=True)
