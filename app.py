@@ -24,7 +24,7 @@ if not os.getenv('DATABASE_URL', ''):
 
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = TRUE
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', ''))
 app.config["SESSION_TYPE"] = "filesystem"
 
@@ -88,7 +88,7 @@ def login():
         login_user(user_object)
         session['username'] = usernameF
         session.permanent = True
-        return redirect(url_for('restrict', username=username))
+        return redirect(url_for('restrict'))
         
         
         return "User not logged in"
