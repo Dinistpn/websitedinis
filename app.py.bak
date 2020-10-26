@@ -97,7 +97,7 @@ def login():
 
     return render_template("login.html", form=login_form)
 
-@app.route("/restrict", methods=['GET', 'POST'])    
+@app.route("/restrict", methods=['GET'])    
 def restrict():
     """ Show search box """
     username = session.get('username')

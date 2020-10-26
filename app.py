@@ -97,7 +97,7 @@ def login():
 
     return render_template("login.html", form=login_form)
 
-@app.route("/restrict", methods=['GET'])    
+@app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
     """ Show search box """
     username = session.get('username')
@@ -141,7 +141,7 @@ def restrict():
     return render_template("restrict.html", username=username, landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
-@app.route("/draws", methods=['GET'])
+@app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
     username = session.get('username')
@@ -151,7 +151,7 @@ def draws():
         
     return render_template("draws.html", username=username)
     
-@app.route("/results", methods=['GET'])
+@app.route("/results", methods=['GET', 'POST'])
 def results():
 
     username = session.get('username')
@@ -186,7 +186,7 @@ def results():
     
     return render_template("results.html", gallery=gallery, username=username)
     
-@app.route("/logout", methods=['GET' ])
+@app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
     
     session.clear()
@@ -194,7 +194,7 @@ def loggedout():
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
     
-@app.route("/image/<idphoto>", methods=['GET'])
+@app.route("/image/<idphoto>", methods=['GET', 'POST'])
 def image(idphoto):
     
     
