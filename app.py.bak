@@ -88,7 +88,7 @@ def login():
         login_user(user_object)
         session['username'] = usernameF
         session.permanent = True
-        return redirect(url_for('restrict'))
+        return redirect(url_for('restrict', username=username))
         
         
         return "User not logged in"
