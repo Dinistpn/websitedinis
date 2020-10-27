@@ -74,7 +74,9 @@ def login():
     usernameF = request.form.get("username")
     login_form= LoginForm()
     
+    
     if session.get('username'):
+        return jsonify(session['username'])
         if session['username'] == True:
             return redirect(url_for('logout'))
     #if username is None:
@@ -87,6 +89,7 @@ def login():
         user_object = User.query.filter_by(username = login_form.username.data).first()
         login_user(user_object)
         session['username'] = usernameF
+        jsonify(session['username'])
         session.permanent = True
         return redirect(url_for('restrict'))
         
