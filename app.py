@@ -27,6 +27,7 @@ app.config['SECRET_KEY'] = secret_key
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', ''))
 app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 db = SQLAlchemy(app)
 engine = create_engine(os.getenv('DATABASE_URL', ''))
@@ -70,13 +71,13 @@ def registration():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-
+    
+    session.clear()
     usernameF = request.form.get("username")
     login_form= LoginForm()
     
     
-    if session.get('username'):
-        return jsonify(session['username'])
+    if session['username']
         if session['username'] == True:
             return redirect(url_for('logout'))
     #if username is None:
@@ -88,8 +89,10 @@ def login():
         
         user_object = User.query.filter_by(username = login_form.username.data).first()
         login_user(user_object)
-        session['username'] = usernameF
-        jsonify(session['username'])
+        rows = exe.execute("SELECT * FROM users WHERE username = :usernameF",
+        {username:usernameF})
+        result = rows.fetchone()      
+        session["username"] = result[1]
         session.permanent = True
         return redirect(url_for('restrict'))
         
@@ -103,7 +106,7 @@ def login():
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
     """ Show search box """
-    username = session.get('username')
+    username = session['username']
     
     if not current_user.is_authenticated:
         flash('Please login', 'you need to login first')
@@ -147,7 +150,7 @@ def restrict():
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session.get('username')
+    username = session['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -157,7 +160,7 @@ def draws():
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session.get('username')
+    username = session['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -201,7 +204,7 @@ def loggedout():
 def image(idphoto):
     
     
-    username = session.get('username')
+    username = session['username']
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
