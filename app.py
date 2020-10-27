@@ -76,14 +76,6 @@ def login():
     usernameF = request.form.get("username")
     login_form= LoginForm()
     
-    
-    if session['username']
-        if session['username'] == True:
-            return redirect(url_for('logout'))
-    #if username is None:
-        
-     #   return redirect(url_for('logout'))
-    
     if login_form.validate_on_submit():
         
         

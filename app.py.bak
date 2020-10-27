@@ -78,7 +78,6 @@ def login():
     
     
     if session['username']
-        return jsonify(session['username'])
         if session['username'] == True:
             return redirect(url_for('logout'))
     #if username is None:
