@@ -72,16 +72,13 @@ def registration():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     
-    session.clear()
     username = request.form.get("username")
-    #login_form= LoginForm()
+    login_form= LoginForm()
     
-    if request.method == "POST":
+    if login_form.validate_on_submit():     
         
-        #login_form.validate_on_submit():        
-        
-        #user_object = User.query.filter_by(username = login_form.username.data).first()
-        #login_user(user_object)
+        user_object = User.query.filter_by(username = login_form.username.data).first()
+        login_user(user_object)
         rows = exe.execute("SELECT * FROM users WHERE username = :username",
         {"username": username})
         result = rows.fetchone()      
@@ -92,7 +89,7 @@ def login():
         
         return "User not logged in"
 
-    return render_template("login.html")
+    return render_template("login.html", form=login_form)
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
