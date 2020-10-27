@@ -74,17 +74,19 @@ def login():
     
     session.clear()
     username = request.form.get("username")
-    login_form= LoginForm()
+    #login_form= LoginForm()
     
-    if login_form.validate_on_submit():        
+    if request.method == "POST":
         
-        user_object = User.query.filter_by(username = login_form.username.data).first()
-        login_user(user_object)
+        #login_form.validate_on_submit():        
+        
+        #user_object = User.query.filter_by(username = login_form.username.data).first()
+        #login_user(user_object)
         rows = exe.execute("SELECT * FROM users WHERE username = :username",
         {"username": username})
         result = rows.fetchone()      
         session["username"] = result[1]
-        session.permanent = True
+
         return redirect(url_for('restrict'))
         
         
