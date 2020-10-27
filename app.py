@@ -73,16 +73,15 @@ def registration():
 def login():
     
     session.clear()
-    usernameF = request.form.get("username")
+    username = request.form.get("username")
     login_form= LoginForm()
     
-    if login_form.validate_on_submit():
-        
+    if login_form.validate_on_submit():        
         
         user_object = User.query.filter_by(username = login_form.username.data).first()
         login_user(user_object)
-        rows = exe.execute("SELECT * FROM users WHERE username = :usernameF",
-        {username:usernameF})
+        rows = exe.execute("SELECT * FROM users WHERE username = :username",
+        {"username": username})
         result = rows.fetchone()      
         session["username"] = result[1]
         session.permanent = True

@@ -72,23 +72,15 @@ def registration():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     
-    session.clear()
+    #session.clear()
     usernameF = request.form.get("username")
     login_form= LoginForm()
     
-    
-    if session['username']
-        if session['username'] == True:
-            return redirect(url_for('logout'))
-    #if username is None:
+    if request.method == "POST":
+        #login_form.validate_on_submit():        
         
-     #   return redirect(url_for('logout'))
-    
-    if login_form.validate_on_submit():
-        
-        
-        user_object = User.query.filter_by(username = login_form.username.data).first()
-        login_user(user_object)
+        #user_object = User.query.filter_by(username = login_form.username.data).first()
+        #login_user(user_object)
         rows = exe.execute("SELECT * FROM users WHERE username = :usernameF",
         {username:usernameF})
         result = rows.fetchone()      
