@@ -86,7 +86,7 @@ def login():
         {"username": username})
         result = rows.fetchone()      
         session["username"] = result[1]
-
+        session.permanent = True
         return redirect(url_for('restrict'))
         
         
