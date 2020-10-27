@@ -91,10 +91,8 @@ def login():
         
         
         return "User not logged in"
-    
-  
 
-    return render_template("login.html", form=login_form)
+    return render_template("login.html")
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():

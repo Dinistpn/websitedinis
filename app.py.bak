@@ -86,7 +86,7 @@ def login():
         {"username": username})
         result = rows.fetchone()      
         session["username"] = result[1]
-
+        session.permanent = True
         return redirect(url_for('restrict'))
         
         
@@ -94,7 +94,7 @@ def login():
     
   
 
-    return render_template("login.html", form=login_form)
+    return render_template("login.html")
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
