@@ -81,7 +81,8 @@ def login():
         login_user(user_object)
         rows = exe.execute("SELECT * FROM users WHERE username = :username",
         {"username": username})
-        result = rows.fetchone()      
+        result = rows.fetchone()     
+        session["username"] = 0      
         session["username"] = result[1]
         session.permanent = True
         return redirect(url_for('restrict'))
