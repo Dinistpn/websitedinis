@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:8000 app:app --preload
+web: gunicorn -b 127.0.0.1:8000 app:app --preload
