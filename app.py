@@ -79,11 +79,12 @@ def login():
         
         user_object = User.query.filter_by(username = login_form.username.data).first()
         login_user(user_object)
-        rows = exe.execute("SELECT * FROM users WHERE username = :username",
-        {"username": username})
-        result = rows.fetchone()     
-        session["username"] = 0      
-        session["username"] = result[1]
+        #rows = exe.execute("SELECT * FROM users WHERE username = :username",
+        #{"username": username})
+        #result = rows.fetchone()     
+        #session["username"] = 0      
+        #session["username"] = result[1]
+        session['username'] = username
         session.permanent = True
         return redirect(url_for('restrict'))
         

@@ -149,7 +149,7 @@ def draws():
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session['username']
+    username = session.get['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
