@@ -95,7 +95,7 @@ def login():
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
     """ Show search box """
-    username = session['username']
+    username = session.get['username']
     
     if not current_user.is_authenticated:
         flash('Please login', 'you need to login first')
@@ -139,7 +139,7 @@ def restrict():
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session['username']
+    username = session.get['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -149,7 +149,7 @@ def draws():
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session['username']
+    username = session.get['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -193,7 +193,7 @@ def loggedout():
 def image(idphoto):
     
     
-    username = session['username']
+    username = session.get['username']
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     

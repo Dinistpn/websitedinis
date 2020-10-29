@@ -23,7 +23,7 @@ if not os.getenv('DATABASE_URL', None):
     raise RuntimeError("DATABASE_URL is not set")
 
 secret_key = secrets.token_hex(16)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = secret_key
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', None))
 app.config["SESSION_TYPE"] = "filesystem"
@@ -95,7 +95,7 @@ def login():
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
     """ Show search box """
-    username = session['username']
+    username = session.get['username']
     
     if not current_user.is_authenticated:
         flash('Please login', 'you need to login first')
@@ -139,7 +139,7 @@ def restrict():
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session['username']
+    username = session.get['username']
     if not current_user.is_authenticated:
         flash('Please login', 'danger')
         return redirect(url_for('login'))
@@ -193,7 +193,7 @@ def loggedout():
 def image(idphoto):
     
     
-    username = session['username']
+    username = session.get['username']
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
