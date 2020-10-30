@@ -136,7 +136,7 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/restrict", methods=['GET'])    
+@app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
 
     """ Show search box """
