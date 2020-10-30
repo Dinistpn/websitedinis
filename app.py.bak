@@ -144,6 +144,7 @@ def restrict():
     
     try:
         print(session['username'])
+        
     except KeyError:
         flash('Please login', 'you need to login first')
         return redirect(url_for('login'))

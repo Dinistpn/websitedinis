@@ -245,6 +245,12 @@ def loggedout():
 def image(idphoto):
     
     username = session["username"]
+    try:
+        print(session['username'])
+    except KeyError:
+        flash('Please login', 'you need to login first')
+        return redirect(url_for('login'))
+        
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
