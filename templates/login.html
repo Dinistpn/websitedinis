@@ -6,23 +6,18 @@
 
 {% block content %}
     <h2>Login</h2>
-    <p>If you still don't have a username please <a href ="/register">register</a>, is a quick process</p>
+    <p>If you still don't have a username please <a href ="/registration">register</a>, is a quick process</p>
     </br>
     <p>Enter your username/password to start the App</p>
     
-    <form action="{{url_for('login')}}" method="POST">
-    
-        {{displayField(form.username, 'Username', autocomplete="off", autofocus=true)}}
-        
-        {{displayField(form.password, 'Password')}}
-        
-        <div>
-            {{ form.submit_button }}
+    <form action="/login" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
         </div>
-        
-        {{ form.csrf_token}}
-    
-    </form>
-    
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Log In</button>
+    </form>  
     
 {% endblock %}

@@ -1,16 +1,14 @@
 import os, json
-from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session 
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-
-from wtform_fields import *
-from models import *
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.orm.session import Session
 import requests
 import datetime
 import secrets
+
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session 
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm.session import Session
 from datetime import datetime
 
 app = Flask(__name__)
@@ -25,11 +23,12 @@ if not os.getenv('DATABASE_URL', None):
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', None))
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-db = SQLAlchemy(app)
+
+#db = SQLAlchemy(app)
 engine = create_engine(os.getenv('DATABASE_URL', None))
 exe = scoped_session(sessionmaker(bind=engine))
 
@@ -50,54 +49,102 @@ def index():
     
 @app.route("/registration", methods=['GET', 'POST'])
 def registration():
+    session.clear()
+    
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
 
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return render_template("error.html", message="must provide username")
 
-    reg_form = RegistrationForm()
+        # Query database for username
+        userCheck = exe.execute("SELECT * FROM users WHERE username = :username",
+                          {"username":request.form.get("username")}).fetchone()
+
+        # Check if username already exist
+        if userCheck:
+            return render_template("error.html", message="username already exist")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("error.html", message="must provide password")
+
+        # Ensure confirmation wass submitted 
+        elif not request.form.get("confirmation"):
+            return render_template("error.html", message="must confirm password")
+
+        # Check passwords are equal
+        elif not request.form.get("password") == request.form.get("confirmation"):
+            return render_template("error.html", message="passwords didn't match")
         
-    if reg_form.validate_on_submit():
-        username = reg_form.username.data
-        password = reg_form.password.data
-            
-        hashed_pass = pbkdf2_sha512.hash(password)
-            
-        user = User(username=username, password=hashed_pass)
-        db.session.add(user)
-        db.session.commit()
-        db.session.close()
-        flash('Registered successfully. Please Login', 'success')
+        # Hash user's password to store in DB
+        
+        hashed_pass = generate_password_hash(request.form.get("password"), method='pbkdf2:sha512', salt_length=8)
+        # Insert register into DB
+        exe.execute("INSERT INTO users (username, password) VALUES (:username, :password)",
+                            {"username":request.form.get("username"), 
+                             "password":hashed_pass})
+
+        # Commit changes to database
+        exe.commit()
+
+        flash('Account created', 'info')
+
+        # Redirect user to login page
         return redirect(url_for('login'))
-            
-    return render_template( "registration.html", form=reg_form)
+        
+    else:
+        return render_template("registration.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     
+    #session.clear()
+
     username = request.form.get("username")
-    login_form= LoginForm()
-    
-    if login_form.validate_on_submit():     
-        
-        user_object = User.query.filter_by(username = login_form.username.data).first()
-        login_user(user_object)
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return render_template("error.html", message="must provide username")
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return render_template("error.html", message="must provide password")
+
+        # Query database for username (http://zetcode.com/db/sqlalchemy/rawsql/)
+        # https://docs.sqlalchemy.org/en/latest/core/connections.html#sqlalchemy.engine.ResultProxy
         rows = exe.execute("SELECT * FROM users WHERE username = :username",
-        {"username": username})
-        result = rows.fetchone()     
-        session["username"] = 0      
-        session["username"] = result[1]
-        session.permanent = True
-        return redirect(url_for('restrict'))
+                            {"username": username})
         
-        
-        return "User not logged in"
+        result = rows.fetchone()
 
-    return render_template("login.html", form=login_form)
+        # Ensure username exists and password is correct
+        if result == None or not check_password_hash(result[2], request.form.get("password")):
+            return render_template("error.html", message="invalid username and/or password")
 
-@app.route("/restrict", methods=['GET', 'POST'])    
+        # Remember which user has logged in
+        session["username"] = request.form.get("username")
+
+        # Redirect user to home page
+        return redirect("/restrict")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
+
+@app.route("/restrict", methods=['GET'])    
 def restrict():
+
     """ Show search box """
-    username = session.get['username']
+    username = session["username"]
     
-    if not current_user.is_authenticated:
+    try:
+        print(session['username'])
+    except KeyError:
         flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
     
@@ -139,9 +186,12 @@ def restrict():
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session.get['username']
-    if not current_user.is_authenticated:
-        flash('Please login', 'danger')
+    username = session["username"]
+    
+    try:
+        print(session['username'])
+    except KeyError:
+        flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
         
     return render_template("draws.html", username=username)
@@ -149,9 +199,11 @@ def draws():
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session.get['username']
-    if not current_user.is_authenticated:
-        flash('Please login', 'danger')
+    username = session["username"]
+    try:
+        print(session['username'])
+    except KeyError:
+        flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
 
     
@@ -185,15 +237,13 @@ def results():
 def loggedout():
     
     session.clear()
-    logout_user()
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
     
-@app.route("/image/<idphoto>", methods=['GET', 'POST'])
+@app.route("/image/<idphoto>", methods=['GET', 'POST']) 
 def image(idphoto):
     
-    
-    username = session.get['username']
+    username = session["username"]
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
