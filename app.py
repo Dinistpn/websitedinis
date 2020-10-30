@@ -143,7 +143,7 @@ def restrict():
     username = session["username"]
     
     try:
-        print(session['username'])
+        print(session["username"])
         
     except KeyError:
         flash('Please login', 'you need to login first')
@@ -181,7 +181,7 @@ def restrict():
                     COUNT(r1.rating) DESC LIMIT 1;")
     weather=weath.fetchall()
     
-    return render_template("restrict.html", username=username, landscape=landscape, maxP=maxP, 
+    return render_template("restrict.html", username=session["username"], landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
 @app.route("/draws", methods=['GET', 'POST'])
@@ -190,19 +190,19 @@ def draws():
     username = session["username"]
     
     try:
-        print(session['username'])
+        print(session["username"])
     except KeyError:
         flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
         
-    return render_template("draws.html", username=username)
+    return render_template("draws.html", username=session["username"])
     
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
     username = session["username"]
     try:
-        print(session['username'])
+        print(session["username"])
     except KeyError:
         flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
@@ -232,7 +232,7 @@ def results():
     
     
     
-    return render_template("results.html", gallery=gallery, username=username)
+    return render_template("results.html", gallery=gallery, username=session["username"])
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
@@ -246,7 +246,7 @@ def image(idphoto):
     
     username = session["username"]
     try:
-        print(session['username'])
+        print(session["username"])
     except KeyError:
         flash('Please login', 'you need to login first')
         return redirect(url_for('login'))
@@ -321,7 +321,7 @@ def image(idphoto):
         # ORDER BY time
         reviews = results.fetchall()
         
-        return render_template("image.html", gallery=gallery, username=username, reviews=reviews)
+        return render_template("image.html", gallery=gallery, username=session["username"], reviews=reviews)
 
 if __name__ == "__main__":
 
