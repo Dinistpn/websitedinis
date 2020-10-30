@@ -136,7 +136,7 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/restrict", methods=['GET'])    
+@app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
 
     """ Show search box """
@@ -236,7 +236,7 @@ def results():
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
-    
+    session.pop('username', None)
     session.clear()
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))

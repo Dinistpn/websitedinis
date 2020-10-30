@@ -4,6 +4,7 @@ import datetime
 import secrets
 
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session 
+from flask_session import Session
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
@@ -236,7 +237,7 @@ def results():
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
-    
+    session.pop('username', None)
     session.clear()
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
