@@ -142,13 +142,6 @@ def restrict():
     """ Show search box """
     username = session.get('username')
     
-    try:
-        print(session.get('username'))
-        
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
-    
     lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
                 COUNT(r1.rating) as ratings\
                 from gallery g\
@@ -188,12 +181,6 @@ def restrict():
 def draws():  
     
     username = session.get('username')
-    
-    try:
-        print(session.get('username'))
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
         
     return render_template("draws.html", username=session.get('username'))
     
@@ -201,12 +188,6 @@ def draws():
 def results():
 
     username = session.get('username')
-    try:
-        print(session.get('username'))
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
-
     
     if not request.args.get("image"):
         return render_template("error.html", message="you must provide a image.")
@@ -245,11 +226,6 @@ def loggedout():
 def image(idphoto):
     
     username = session.get('username')
-    try:
-        print(session.get('username'))
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
         
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
