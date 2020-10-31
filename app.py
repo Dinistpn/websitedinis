@@ -9,7 +9,6 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.orm.session import Session
 from datetime import datetime
 
 app = Flask(__name__)
@@ -141,14 +140,7 @@ def login():
 def restrict():
 
     """ Show search box """
-    username = session["username"]
-    
-    try:
-        print(session["username"])
-        
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
+    username = session.get('username')
     
     lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
                 COUNT(r1.rating) as ratings\
@@ -182,32 +174,20 @@ def restrict():
                     COUNT(r1.rating) DESC LIMIT 1;")
     weather=weath.fetchall()
     
-    return render_template("restrict.html", username=session["username"], landscape=landscape, maxP=maxP, 
+    return render_template("restrict.html", username=session.get('username'), landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session["username"]
-    
-    try:
-        print(session["username"])
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
+    username = session.get('username')
         
-    return render_template("draws.html", username=session["username"])
+    return render_template("draws.html", username=session.get('username'))
     
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session["username"]
-    try:
-        print(session["username"])
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
-
+    username = session.get('username')
     
     if not request.args.get("image"):
         return render_template("error.html", message="you must provide a image.")
@@ -233,7 +213,7 @@ def results():
     
     
     
-    return render_template("results.html", gallery=gallery, username=session["username"])
+    return render_template("results.html", gallery=gallery, username=session.get('username'))
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
@@ -245,12 +225,7 @@ def loggedout():
 @app.route("/image/<idphoto>", methods=['GET', 'POST']) 
 def image(idphoto):
     
-    username = session["username"]
-    try:
-        print(session["username"])
-    except KeyError:
-        flash('Please login', 'you need to login first')
-        return redirect(url_for('login'))
+    username = session.get('username')
         
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
@@ -322,7 +297,7 @@ def image(idphoto):
         # ORDER BY time
         reviews = results.fetchall()
         
-        return render_template("image.html", gallery=gallery, username=session["username"], reviews=reviews)
+        return render_template("image.html", gallery=gallery, username=session.get('username'), reviews=reviews)
 
 if __name__ == "__main__":
 
