@@ -9,7 +9,8 @@
         <ul class="navbar-nav mr-auto">
         <li class="nav-item">
             <h3>Search Results</h3>
-            <h4 class="card-text">Welcome {{username}}!<h6>
+            <h4 class="card-text">Welcome!<h6>
+            <!--{{username}}-->
         </li>
         </ul>
 
@@ -28,7 +29,7 @@
         <a href="https://www.{{image['url']}}", target="_blank"; class="btn btn-primary"; 
         style="position: absolute; background-color:#1a1918; height: 2rem;">Flicker</a>
     </div>
-            <div class="card" style="width: 10rem; height: 12rem; background-image: url(static/{{image['idphoto']}}.jpg");>
+            <div class="card" style="width: 10rem; height: 12rem; background-image: url('/static/{{image['idphoto']}}.jpg'); ">
               <h4 class="card-title" style="color: blue;">{{image['location']}}</h4>
               <div class="card-body">                  
                     <h6 class="card-text" style="color: blue;">{{image['weather']}}</h6>                  

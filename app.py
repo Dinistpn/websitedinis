@@ -13,29 +13,26 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-def before_request():
-    app.jinja_env.cache = {}
-    app.before_request(before_request)
-
 if not os.getenv('DATABASE_URL', None):
     raise RuntimeError("DATABASE_URL is not set")
 
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Set up database
 
-#db = SQLAlchemy(app)
-engine = create_engine(os.getenv('DATABASE_URL', None))
+# database engine object from SQLAlchemy that manages connections to the database
+engine = create_engine(os.getenv("DATABASE_URL"))
+
+# create a 'scoped session' that ensures different users' interactions with the
+# database are kept separate
 exe = scoped_session(sessionmaker(bind=engine))
 
 login = LoginManager(app)
 login.init_app(app)
-
-
 
 @login.user_loader
 def load_user(id):
@@ -140,7 +137,7 @@ def login():
 def restrict():
 
     """ Show search box """
-    username = session.get('username')
+    #username = session.get('username')
     
     lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
                 COUNT(r1.rating) as ratings\
@@ -174,20 +171,20 @@ def restrict():
                     COUNT(r1.rating) DESC LIMIT 1;")
     weather=weath.fetchall()
     
-    return render_template("restrict.html", username=session.get('username'), landscape=landscape, maxP=maxP, 
+    return render_template("restrict.html", landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session.get('username')
+    #username = session.get('username')
         
-    return render_template("draws.html", username=session.get('username'))
+    return render_template("draws.html", )
     
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session.get('username')
+    #username = session.get('username')
     
     if not request.args.get("image"):
         return render_template("error.html", message="you must provide a image.")
@@ -213,7 +210,7 @@ def results():
     
     
     
-    return render_template("results.html", gallery=gallery, username=session.get('username'))
+    return render_template("results.html", gallery=gallery)
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
