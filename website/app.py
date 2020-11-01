@@ -137,7 +137,7 @@ def login():
 def restrict():
 
     """ Show search box """
-    username = session.get('username')
+    #username = session.get('username')
     
     lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
                 COUNT(r1.rating) as ratings\
@@ -171,20 +171,20 @@ def restrict():
                     COUNT(r1.rating) DESC LIMIT 1;")
     weather=weath.fetchall()
     
-    return render_template("restrict.html", username=session.get('username'), landscape=landscape, maxP=maxP, 
+    return render_template("restrict.html", landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    username = session.get('username')
+    #username = session.get('username')
         
-    return render_template("draws.html", username=session.get('username'))
+    return render_template("draws.html", )
     
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    username = session.get('username')
+    #username = session.get('username')
     
     if not request.args.get("image"):
         return render_template("error.html", message="you must provide a image.")
@@ -210,7 +210,7 @@ def results():
     
     
     
-    return render_template("results.html", gallery=gallery, username=session.get('username'))
+    return render_template("results.html", gallery=gallery)
     
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
