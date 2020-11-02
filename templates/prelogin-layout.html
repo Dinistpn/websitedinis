@@ -66,6 +66,18 @@
                     </li>
                 </ul>
             {% else %}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/restrict" style="color:#1f94c0;">
+                            Search
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/draws" style="color:#1f94c0;">
+                            Draws
+                        </a>
+                    </li>
+                </ul>   
                 <ul class="navbar-nav ml-auto">      
                     <li class="nav-item">
                         <a class="nav-link" 
@@ -78,12 +90,12 @@
                             href="/login" style="color:#1f94c0; ">Login
                         </a>
                     </li>
-                </ul> 
-                <ul class="navbar-nav ml-auto">    
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>     
-                    <li class="nav-item"><a class="nav-link" href="/logout"> 
-                    Logout</a></li>
-                </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            Home
+                        </a>
+                    </li>
+                </ul>                
             {% endif %}
         </div>
         

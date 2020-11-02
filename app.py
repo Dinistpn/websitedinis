@@ -22,13 +22,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Set up database
-
-# database engine object from SQLAlchemy that manages connections to the database
 engine = create_engine(os.getenv("DATABASE_URL"))
 
-# create a 'scoped session' that ensures different users' interactions with the
-# database are kept separate
 exe = scoped_session(sessionmaker(bind=engine))
 
 login = LoginManager(app)
@@ -43,7 +38,86 @@ def index():
     """ Show search box """
  
     return render_template("index.html")
+
+@app.route("/restrict", methods=['GET', 'POST'])    
+def restrict():
+
+    """ Show search box """
+    #username = session.get('username')
     
+    lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
+                COUNT(r1.rating) as ratings\
+                from gallery g\
+                JOIN reviews r1 on r1.idphoto=g.idphoto\
+                GROUP By g.landscape\
+                ORDER BY COUNT(r1.comment) DESC, \
+                COUNT(r1.rating) DESC LIMIT 1;")
+    landscape= lands.fetchall()
+    
+    calc = exe.execute("SELECT r.username, \
+    COUNT(r.comment) as comments, \
+    COUNT(r.rating) as rating FROM reviews r\
+    GROUP by r.username \
+    ORDER BY COUNT(r.comment) DESC, \
+    COUNT(r.rating) DESC LIMIT 1")
+    maxP = calc.fetchall()
+
+    rUser = exe.execute("SELECT u.username \
+                    FROM users u JOIN reviews r\
+                    ON u.username= r.username\
+                    ORDER BY timeDate DESC LIMIT 1")
+    recent = rUser.fetchall()
+    
+    weath= exe.execute("select g.weather, COUNT(r1.comment) as comments,\
+                    COUNT(r1.rating) as ratings\
+                    from gallery g\
+                    JOIN reviews r1 on r1.idphoto=g.idphoto\
+                    GROUP By g.weather\
+                    ORDER BY COUNT(r1.comment) DESC, \
+                    COUNT(r1.rating) DESC LIMIT 1;")
+    weather=weath.fetchall()
+    
+    return render_template("restrict.html", landscape=landscape, maxP=maxP, 
+    recent=recent, weather=weather)
+
+@app.route("/draws", methods=['GET', 'POST'])
+def draws():  
+    
+    #username = session.get('username')
+        
+    return render_template("draws.html", )
+    
+@app.route("/results", methods=['GET', 'POST'])
+def results():
+
+    #username = session.get('username')
+    
+    if not request.args.get("image"):
+        return render_template("error.html", message="you must provide a image.")
+
+    query = "%" + request.args.get("image") + "%"
+
+    #query = query.idphoto()#
+    
+    rows = exe.execute("SELECT idphoto, location, url, weather, landscape FROM gallery WHERE \
+                        idphoto LIKE :query OR \
+                        weather LIKE :query OR \
+                        landscape LIKE :query OR \
+                        location LIKE :query \
+                        ORDER by location",
+                        {"query": query})
+    
+    # gallery not founded
+    if rows.rowcount == 0:
+        return render_template("error.html", message="we can't find with that description.")
+    
+    # Fetch all the results
+    gallery = rows.fetchall()
+    
+    
+    
+    return render_template("results.html", gallery=gallery)
+
 @app.route("/registration", methods=['GET', 'POST'])
 def registration():
     session.clear()
@@ -133,85 +207,6 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/restrict", methods=['GET', 'POST'])    
-def restrict():
-
-    """ Show search box """
-    #username = session.get('username')
-    
-    lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
-                COUNT(r1.rating) as ratings\
-                from gallery g\
-                JOIN reviews r1 on r1.idphoto=g.idphoto\
-                GROUP By g.landscape\
-                ORDER BY COUNT(r1.comment) DESC, \
-                COUNT(r1.rating) DESC LIMIT 1;")
-    landscape= lands.fetchall()
-    
-    calc = exe.execute("SELECT r.username, \
-    COUNT(r.comment) as comments, \
-    COUNT(r.rating) as rating FROM reviews r\
-    GROUP by r.username \
-    ORDER BY COUNT(r.comment) DESC, \
-    COUNT(r.rating) DESC LIMIT 1")
-    maxP = calc.fetchall()
-
-    rUser = exe.execute("SELECT u.username \
-                    FROM users u JOIN reviews r\
-                    ON u.username= r.username\
-                    ORDER BY timeDate DESC LIMIT 1")
-    recent = rUser.fetchall()
-    
-    weath= exe.execute("select g.weather, COUNT(r1.comment) as comments,\
-                    COUNT(r1.rating) as ratings\
-                    from gallery g\
-                    JOIN reviews r1 on r1.idphoto=g.idphoto\
-                    GROUP By g.weather\
-                    ORDER BY COUNT(r1.comment) DESC, \
-                    COUNT(r1.rating) DESC LIMIT 1;")
-    weather=weath.fetchall()
-    
-    return render_template("restrict.html", landscape=landscape, maxP=maxP, 
-    recent=recent, weather=weather)
-
-@app.route("/draws", methods=['GET', 'POST'])
-def draws():  
-    
-    #username = session.get('username')
-        
-    return render_template("draws.html", )
-    
-@app.route("/results", methods=['GET', 'POST'])
-def results():
-
-    #username = session.get('username')
-    
-    if not request.args.get("image"):
-        return render_template("error.html", message="you must provide a image.")
-
-    query = "%" + request.args.get("image") + "%"
-
-    #query = query.idphoto()#
-    
-    rows = exe.execute("SELECT idphoto, location, url, weather, landscape FROM gallery WHERE \
-                        idphoto LIKE :query OR \
-                        weather LIKE :query OR \
-                        landscape LIKE :query OR \
-                        location LIKE :query \
-                        ORDER by location",
-                        {"query": query})
-    
-    # gallery not founded
-    if rows.rowcount == 0:
-        return render_template("error.html", message="we can't find with that description.")
-    
-    # Fetch all the results
-    gallery = rows.fetchall()
-    
-    
-    
-    return render_template("results.html", gallery=gallery)
-    
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
     session.pop('username', None)
