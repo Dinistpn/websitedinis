@@ -1,38 +1,42 @@
 import os, json
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session 
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+
+from wtform_fields import *
+from models import *
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm.session import Session
 import requests
 import datetime
 import secrets
-
-from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session 
-from flask_session import Session
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from werkzeug.security import check_password_hash, generate_password_hash
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import datetime
 
 app = Flask(__name__)
+
+def before_request():
+    app.jinja_env.cache = {}
+    app.before_request(before_request)
 
 if not os.getenv('DATABASE_URL', None):
     raise RuntimeError("DATABASE_URL is not set")
 
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
-app.config["SESSION_PERMANENT"] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI']=(os.getenv('DATABASE_URL', None))
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Set up database
-
-# database engine object from SQLAlchemy that manages connections to the database
-engine = create_engine(os.getenv("DATABASE_URL"))
-
-# create a 'scoped session' that ensures different users' interactions with the
-# database are kept separate
+db = SQLAlchemy(app)
+engine = create_engine(os.getenv('DATABASE_URL', None))
 exe = scoped_session(sessionmaker(bind=engine))
 
 login = LoginManager(app)
 login.init_app(app)
+
+
 
 @login.user_loader
 def load_user(id):
@@ -46,92 +50,47 @@ def index():
     
 @app.route("/registration", methods=['GET', 'POST'])
 def registration():
-    session.clear()
-    
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
 
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return render_template("error.html", message="must provide username")
 
-        # Query database for username
-        userCheck = exe.execute("SELECT * FROM users WHERE username = :username",
-                          {"username":request.form.get("username")}).fetchone()
-
-        # Check if username already exist
-        if userCheck:
-            return render_template("error.html", message="username already exist")
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return render_template("error.html", message="must provide password")
-
-        # Ensure confirmation wass submitted 
-        elif not request.form.get("confirmation"):
-            return render_template("error.html", message="must confirm password")
-
-        # Check passwords are equal
-        elif not request.form.get("password") == request.form.get("confirmation"):
-            return render_template("error.html", message="passwords didn't match")
+    reg_form = RegistrationForm()
         
-        # Hash user's password to store in DB
-        
-        hashed_pass = generate_password_hash(request.form.get("password"), method='pbkdf2:sha512', salt_length=8)
-        # Insert register into DB
-        exe.execute("INSERT INTO users (username, password) VALUES (:username, :password)",
-                            {"username":request.form.get("username"), 
-                             "password":hashed_pass})
-
-        # Commit changes to database
-        exe.commit()
-
-        flash('Account created', 'info')
-
-        # Redirect user to login page
+    if reg_form.validate_on_submit():
+        username = reg_form.username.data
+        password = reg_form.password.data
+            
+        hashed_pass = pbkdf2_sha512.hash(password)
+            
+        user = User(username=username, password=hashed_pass)
+        db.session.add(user)
+        db.session.commit()
+        db.session.close()
+        flash('Registered successfully. Please Login', 'success')
         return redirect(url_for('login'))
-        
-    else:
-        return render_template("registration.html")
+            
+    return render_template( "registration.html", form=reg_form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     
-    #session.clear()
-
     username = request.form.get("username")
-
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return render_template("error.html", message="must provide username")
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return render_template("error.html", message="must provide password")
-
-        # Query database for username (http://zetcode.com/db/sqlalchemy/rawsql/)
-        # https://docs.sqlalchemy.org/en/latest/core/connections.html#sqlalchemy.engine.ResultProxy
-        rows = exe.execute("SELECT * FROM users WHERE username = :username",
-                            {"username": username})
+    login_form= LoginForm()
+    
+    if login_form.validate_on_submit():     
         
-        result = rows.fetchone()
-
-        # Ensure username exists and password is correct
-        if result == None or not check_password_hash(result[2], request.form.get("password")):
-            return render_template("error.html", message="invalid username and/or password")
-
-        # Remember which user has logged in
+        user_object = User.query.filter_by(username = login_form.username.data).first()
+        login_user(user_object)
+        #rows = exe.execute("SELECT * FROM users WHERE username = :username",
+        #{"username": username})
+        #result = rows.fetchone()     
+        #session["username"] = 0      
+        #session["username"] = result[1]
         session["username"] = request.form.get("username")
 
-        # Redirect user to home page
-        return redirect("/restrict")
+        return redirect(url_for('restrict'))     
+        
+        return "User not logged in"
 
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("login.html")
+    return render_template("login.html", form=login_form)
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
