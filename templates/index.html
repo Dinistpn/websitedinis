@@ -4,9 +4,7 @@
     Home
 {% endblock %}
 
-{% block content %}
-        <h3>Welcome o this page to see the gallery please... <a href ="/login">Login</a></h3>
-                <small id="bookHelp" class="form-text text-muted">To see the galleries and smooth music please login, is totally free and does not has publicity.</small>
+{% block content %}      
             </br>
             <h3 id="sec1"> My favorite Travels</h3>
             <p>In this website I present some of the special places I visited and why I consider this places to be <br/>
@@ -18,7 +16,64 @@
                     <li> <a href="#sec2"> II Go to </a> Give you contribute to this website </li>
                     <li> <a href="#sec3"> III Go to </a> The end </li>
                 
-                </ol> 
+            </ol> 
+            <h6> Let us know your favourite vactions locations and how many days you stayed</h6>
+
+            <form method="POST" class="form-border" style="padding:2px; border-style: inset ; border-color:blue">
+              <div class="form-row">
+                <div class="form-group col-sm-6" style="margin-top:5px;">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">Location</span>
+                      </div>
+                      <textarea name="location" id="location" class="form-control" rows="1" required></textarea>
+                  </div>
+                </div>            
+                  <div class="form-group col-sm-6" style="margin-top:5px;">
+                      <div class="input-group">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text">Days you stayed</span>
+                          </div>
+                          <textarea name="days" id="days" class="form-control" rows="1" required></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group col-sm" style="margin-top:5px;">
+                      <button class="btn btn-success" type="submit">Submit</button>
+                  </div>
+                 
+              </div>
+          </form>
+        <div class="results-container" style="margin:1px;float:left; border-style: inset; 
+          border-color:blue;">
+          
+          <div class="card2">
+            <div class="card-body2">
+              <h5>Location</h5>
+              {% for dest in destinations %}
+                <h6>{{dest['location']}}<h6 class="ee">
+              {% endfor %}    
+            </div>
+          </div>  
+          <div class="card2">
+              <div class="card-body2">
+                <h5>Number of days</h5>
+                {% for dest in destinations %}
+                  <h6>{{dest['days']}}<h6 class="ee"> 
+                {% endfor %} 
+              </div>
+          </div>   
+        <div class="card2">
+          <div class="card-body2">
+              <h6><h6 class="ee">
+          </div>
+        </div>    
+        <div class="card2">
+            <div class="card-body2">
+                <h6><h6 class="ee"> 
+            </div>
+        </div>   
+      </div>
+  
                 <h1 style=color:purple;text-align:center-left;> Before you travel</h1>
             
                 <div class="fe"> <p> Travels can be the most wonderful thing in the world,

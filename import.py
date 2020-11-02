@@ -75,10 +75,14 @@ print("gallery update")
 
 curr.execute("CREATE TABLE reviews (id SERIAL PRIMARY KEY, \
                                    timeDate TIMESTAMP NOT NULL, \
-                                   username VARCHAR, \
+                                   username VARCHAR ( 255 ), \
 								   comment VARCHAR NOT NULL, \
                                    idphoto VARCHAR NOT NULL, \
 								   rating SMALLINT NOT NULL);")	
-print("reviews!")							   						  
+print("reviews!")	
+curr.execute("CREATE TABLE destinations (id SERIAL PRIMARY KEY, \
+                                location VARCHAR ( 255 ), \
+                                days SMALLINT NOT NULL);")	
+print("reviews!")						   						  
 conn.commit()
 print("Insert Completed!")

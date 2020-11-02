@@ -33,11 +33,28 @@ login.init_app(app)
 def load_user(id):
     return User.query.get(int(id))  
 
-@app.route("/")    
+@app.route("/", methods=['GET', 'POST'])    
 def index():
-    """ Show search box """
- 
-    return render_template("index.html")
+
+    if request.method == "POST":
+        """ Show search box """
+        location=request.form.get("location")
+        days= request.form.get("days")
+        exe.execute("INSERT INTO destinations (location, days) VALUES (:location,:days )",
+                                {"location":location,
+                                "days":days})
+            # Commit changes to database
+        exe.commit()
+   
+        flash('Submited', 'info')
+
+        # Redirect user to index
+        return redirect(request.referrer)
+    dest=exe.execute("select * from destinations;")
+
+    destinations= dest.fetchall()
+  
+    return render_template("index.html", destinations=destinations)
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():
