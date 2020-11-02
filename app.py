@@ -50,7 +50,7 @@ def index():
 
         # Redirect user to index
         return redirect(request.referrer)
-    dest=exe.execute("select * from destinations;")
+    dest=exe.execute("select * from destinations order by id Desc LIMIT 6;")
 
     destinations= dest.fetchall()
   

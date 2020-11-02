@@ -22,9 +22,10 @@
     <h5 class="alert alert-warning">Users Reviews</h4>
     <h5>Make your own review!</h5>
     
+    
     <div>
-        <!-- REVIEW FORM -->
-        
+        {% if session.username %}
+        <!-- REVIEW FORM --> 
         <form method="POST" class="form-border" style="padding:5px; border-style: inset ; border-color:blue">
             <div class="form-row">
                 <div class="form-group col-sm">
@@ -52,8 +53,11 @@
                
             </div>
         </form>
-       
+        {% else %}
+        <h3>If you wish to post and see reviews, please first <a href ="/login">Login</a>.</h3> 
         <!-- REVIEW LIST -->
+        {% endif %}
+
         <div id="userReviews">
             <h2></h2>
             {% for review in reviews %}
