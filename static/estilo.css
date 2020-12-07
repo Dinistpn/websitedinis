@@ -29,8 +29,6 @@ code {
   font-size: 80%;
 }
 
-
-&amp;amp;nbsp;
  
 .card {
 border: 2px solid #e7e7e7;
@@ -98,19 +96,18 @@ padding: .5rem;
         display: block;
         margin-left: auto;
         margin-right: auto;
-        width: 16rem; 
+        height:100%;
+        width:50%;
         float:left; 
-        margin: 1px;
         background-color: #d4d9d5;
     }
     
     .card-body2{
         display: block;
+        width:100%;
         margin-left: auto;
         margin-right: auto;
-        height: 12rem;
-        margin: 3px;
-        margin:3px;
+        height: 100%;
     }
     
     .closebtn {
@@ -125,6 +122,16 @@ padding: .5rem;
     h6.ee {
         color:#1f94c0; 
     }
+
+    .Row {
+        display: table;
+        width: 100%; /*Optional*/
+        table-layout: fixed; /*Optional*/
+        border-spacing: 10px; /*Optional*/
+    }
+ 
+
+ 
 
 
 

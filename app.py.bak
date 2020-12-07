@@ -56,34 +56,16 @@ def index():
     dest=exe.execute('select * from destinations order by id Desc LIMIT 6;')
     destinations= dest.fetchall()
     
-    avg=exe.execute('SELECT ROUND(AVG(days),2) as "num days" \
-    from destinations;')
+    avg=exe.execute('SELECT ROUND(AVG(days),2) as "num days" from destinations;')
     average= avg.fetchall()
-
-    avg1=exe.execute('SELECT ROUND(AVG(cost),2) as "costA" \
-    from costs;')
-    average1= avg1.fetchall()
-
-    avg2=exe.execute('SELECT country, cost as "max" \
-    from costs ORDER BY cost \
-    DESC LIMIT 1;')
-    average2= avg2.fetchall()
-
-    avgA=exe.execute('SELECT days, Country \
-    from destinations GROUP BY days,country ORDER by days DESC LIMIT 1;')
-    averageA= avgA.fetchall()
-
-    avgB=exe.execute('SELECT c.country, COUNT(d.country) as counta, c.cost from costs c join destinations\
-     d on c.country=d.country group by c.country, c.cost order by COUNT(d.country) \
-     DESC LIMIT 6;')
-    averageB= avgB.fetchall()
     
-    avgC=exe.execute('SELECT country, ROUND(AVG(days),1) as "num days" \
-    from destinations GROUP by country ORDER by "num days" DESC LIMIT 6;')
+    avgC=exe.execute('SELECT country, ROUND(AVG(days),2) as "num days"\ 
+                                from destinations GROUP by country ORDER\ 
+                                by "num days" DESC;')
     averageC= avgC.fetchall()                            
     
     return render_template("index.html", destinations=destinations, average=average, 
-    average1=average1, average2=average2, averageA=averageA, averageB=averageB, averageC=averageC)
+    averageC=averageC)
 
 @app.route("/restrict", methods=['GET', 'POST'])    
 def restrict():

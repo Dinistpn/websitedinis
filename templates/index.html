@@ -11,70 +11,390 @@
             some of the best places I visited until now, also some smooth music made by me.    
             </p>
             <img src ="static/lar.jpg" width = "60%" padding-bottom: 30px;>
+            <p>Bellow you can give your contribution by chosing your favourite 
+              vacations spots, also you can see the comparation between the most popular 
+              spots and the cost of the spots based on the ranking of
+              <a href=https://ceoworld.biz/2020/02/03/most-expensive-countries-in-the-world-to-live-in-2020>
+              Ceoworld.</a></a>
+            </p>
+           
+            <div id="piechart"></div>
+
+            <script type="text/javascript">
+     
+              // Load google charts
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+
+              // Draw the chart and set the chart values
+               
+              var t1= document.querySelector('#try1').innerHTML;
+
+              function drawChart() {  
+                var data = google.visualization.arrayToDataTable([
+                ['Country', 'Numbers'],
+                ['Portugal', 4],
+                ['Poland', 4],
+                ['Spain', 3],
+                ['Hungary', 2],
+                ['Croatia', 1],
+                ['Malta', 1]
+              ]);
+              
+                // Optional; add a title and set the width and height of the chart
+                var options = {'title':'Most Popular Countries', 'width':550, 'height':400};
+              
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+              }
+              </script> 
             <ol>
                     <li> <a href="#sec1"> I Go to </a> My favorite Travels </li>
                     <li> <a href="#sec2"> II Go to </a> Give you contribute to this website </li>
                     <li> <a href="#sec3"> III Go to </a> The end </li>
                 
-            </ol> 
+            </ol>
             <h6> Let us know your favourite vactions locations and how many days you stayed</h6>
-
             <form method="POST" class="form-border" style="padding:2px; border-style: inset ; border-color:blue">
-              <div class="form-row">
-                <div class="form-group col-sm-6" style="margin-top:5px;">
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                          <span class="input-group-text">Location</span>
-                      </div>
-                      <textarea name="location" id="location" class="form-control" rows="1" required></textarea>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="location">Location</label>
+                      <input type="text" name="location" id="location" class="form-control" 
+                      rows="1" required></input>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="days">Days you stayed</label>
+                      <input type="number" step="1" pattern="\d+" name="days" id="days" 
+                      class="form-control" rows="1" required min="1"></input>
+                    </div>
                   </div>
-                </div>            
-                  <div class="form-group col-sm-6" style="margin-top:5px;">
-                      <div class="input-group">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text">Days you stayed</span>
-                          </div>
-                          <textarea name="days" id="days" class="form-control" rows="1" required></textarea>
-                      </div>
-                  </div>
-                  <div class="form-group col-sm" style="margin-top:5px;">
-                      <button class="btn btn-success" type="submit">Submit</button>
-                  </div>
-                 
-              </div>
-          </form>
-        <div class="results-container" style="margin:1px;float:left; border-style: inset; 
-          border-color:blue;">
+                  <label for="country">Choose a Country:</label>
+
+                    <select name="country" id="country" class="form-control" rows="1" required>
+                      <option value="">--Please choose the Country--</option>                    
+                      <option value ="Afghanistan">Afghanistan</option>
+                      <option value ="Albania">Albania</option>
+                      <option value ="Algeria">Algeria</option>
+                      <option value ="Andorra">Andorra</option>
+                      <option value ="Angola">Angola</option>
+                      <option value ="Antigua and Barbuda">Antigua and Barbuda</option>
+                      <option value ="Argentina">Argentina</option>
+                      <option value ="Armenia">Armenia</option>
+                      <option value ="Australia">Australia</option>
+                      <option value ="Austria">Austria</option>
+                      <option value ="Azerbaijan">Azerbaijan</option>
+                      <option value ="The Bahamas">The Bahamas</option>
+                      <option value ="Bahrain">Bahrain</option>
+                      <option value ="Bangladesh">Bangladesh</option>
+                      <option value ="Barbados">Barbados</option>
+                      <option value ="Belarus">Belarus</option>
+                      <option value ="Belgium">Belgium</option>
+                      <option value ="Belize">Belize</option>
+                      <option value ="Benin">Benin</option>
+                      <option value ="Bhutan">Bhutan</option>
+                      <option value ="Bolivia">Bolivia</option>
+                      <option value ="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                      <option value ="Botswana">Botswana</option>
+                      <option value ="Brazil">Brazil</option>
+                      <option value ="Brunei">Brunei</option>
+                      <option value ="Bulgaria">Bulgaria</option>
+                      <option value ="Burkina Faso">Burkina Faso</option>
+                      <option value ="Burundi">Burundi</option>
+                      <option value ="Cabo Verde">Cabo Verde</option>
+                      <option value ="Cambodia">Cambodia</option>
+                      <option value ="Cameroon">Cameroon</option>
+                      <option value ="Canada">Canada</option>
+                      <option value ="Central African Republic">Central African Republic</option>
+                      <option value ="Chad">Chad</option>
+                      <option value ="Chile">Chile</option>
+                      <option value ="China">China</option>
+                      <option value ="Colombia">Colombia</option>
+                      <option value ="Comoros">Comoros</option>
+                      <option value ="Congo, Democratic Republic of the">Congo, Democratic Republic of the</option>
+                      <option value ="Congo, Republic of the">Congo, Republic of the</option>
+                      <option value ="Costa Rica">Costa Rica</option>
+                      <option value ="Côte d’Ivoire">Côte d’Ivoire</option>
+                      <option value ="Croatia">Croatia</option>
+                      <option value ="Cuba">Cuba</option>
+                      <option value ="Cyprus">Cyprus</option>
+                      <option value ="Czech Republic">Czech Republic</option>
+                      <option value ="Denmark">Denmark</option>
+                      <option value ="Djibouti">Djibouti</option>
+                      <option value ="Dominica">Dominica</option>
+                      <option value ="Dominican Republic">Dominican Republic</option>
+                      <option value ="East Timor (Timor-Leste)">East Timor (Timor-Leste)</option>
+                      <option value ="Ecuador">Ecuador</option>
+                      <option value ="Egypt">Egypt</option>
+                      <option value ="El Salvador">El Salvador</option>
+                      <option value ="Equatorial Guinea">Equatorial Guinea</option>
+                      <option value ="Eritrea">Eritrea</option>
+                      <option value ="Estonia">Estonia</option>
+                      <option value ="Eswatini">Eswatini</option>
+                      <option value ="Ethiopia">Ethiopia</option>
+                      <option value ="Fiji">Fiji</option>
+                      <option value ="Finland">Finland</option>
+                      <option value ="France">France</option>
+                      <option value ="Gabon">Gabon</option>
+                      <option value ="The Gambia">The Gambia</option>
+                      <option value ="Georgia">Georgia</option>
+                      <option value ="Germany">Germany</option>
+                      <option value ="Ghana">Ghana</option>
+                      <option value ="Greece">Greece</option>
+                      <option value ="Grenada">Grenada</option>
+                      <option value ="Guatemala">Guatemala</option>
+                      <option value ="Guinea">Guinea</option>
+                      <option value ="Guinea-Bissau">Guinea-Bissau</option>
+                      <option value ="Guyana">Guyana</option>
+                      <option value ="Haiti">Haiti</option>
+                      <option value ="Honduras">Honduras</option>
+                      <option value ="Hungary">Hungary</option>
+                      <option value ="Iceland">Iceland</option>
+                      <option value ="India">India</option>
+                      <option value ="Indonesia">Indonesia</option>
+                      <option value ="Iran">Iran</option>
+                      <option value ="Iraq">Iraq</option>
+                      <option value ="Ireland">Ireland</option>
+                      <option value ="Israel">Israel</option>
+                      <option value ="Italy">Italy</option>
+                      <option value ="Jamaica">Jamaica</option>
+                      <option value ="Japan">Japan</option>
+                      <option value ="Jordan">Jordan</option>
+                      <option value ="Kazakhstan">Kazakhstan</option>
+                      <option value ="Kenya">Kenya</option>
+                      <option value ="Kiribati">Kiribati</option>
+                      <option value ="Korea, North">Korea, North</option>
+                      <option value ="Korea, South">Korea, South</option>
+                      <option value ="Kosovo">Kosovo</option>
+                      <option value ="Kuwait">Kuwait</option>
+                      <option value ="Kyrgyzstan">Kyrgyzstan</option>
+                      <option value ="Laos">Laos</option>
+                      <option value ="Latvia">Latvia</option>
+                      <option value ="Lebanon">Lebanon</option>
+                      <option value ="Lesotho">Lesotho</option>
+                      <option value ="Liberia">Liberia</option>
+                      <option value ="Libya">Libya</option>
+                      <option value ="Liechtenstein">Liechtenstein</option>
+                      <option value ="Lithuania">Lithuania</option>
+                      <option value ="Luxembourg">Luxembourg</option>
+                      <option value ="Madagascar">Madagascar</option>
+                      <option value ="Malawi">Malawi</option>
+                      <option value ="Malaysia">Malaysia</option>
+                      <option value ="Maldives">Maldives</option>
+                      <option value ="Mali">Mali</option>
+                      <option value ="Malta">Malta</option>
+                      <option value ="Marshall Islands">Marshall Islands</option>
+                      <option value ="Mauritania">Mauritania</option>
+                      <option value ="Mauritius">Mauritius</option>
+                      <option value ="Mexico">Mexico</option>
+                      <option value ="Micronesia, Federated States of">Micronesia, Federated States of</option>
+                      <option value ="Moldova">Moldova</option>
+                      <option value ="Monaco">Monaco</option>
+                      <option value ="Mongolia">Mongolia</option>
+                      <option value ="Montenegro">Montenegro</option>
+                      <option value ="Morocco">Morocco</option>
+                      <option value ="Mozambique">Mozambique</option>
+                      <option value ="Myanmar (Burma)">Myanmar (Burma)</option>
+                      <option value ="Namibia">Namibia</option>
+                      <option value ="Nauru">Nauru</option>
+                      <option value ="Nepal">Nepal</option>
+                      <option value ="Netherlands">Netherlands</option>
+                      <option value ="New Zealand">New Zealand</option>
+                      <option value ="Nicaragua">Nicaragua</option>
+                      <option value ="Niger">Niger</option>
+                      <option value ="Nigeria">Nigeria</option>
+                      <option value ="North Macedonia">North Macedonia</option>
+                      <option value ="Norway">Norway</option>
+                      <option value ="Oman">Oman</option>
+                      <option value ="Pakistan">Pakistan</option>
+                      <option value ="Palau">Palau</option>
+                      <option value ="Panama">Panama</option>
+                      <option value ="Papua New Guinea">Papua New Guinea</option>
+                      <option value ="Paraguay">Paraguay</option>
+                      <option value ="Peru">Peru</option>
+                      <option value ="Philippines">Philippines</option>
+                      <option value ="Poland">Poland</option>
+                      <option value ="Portugal">Portugal</option>
+                      <option value ="Qatar">Qatar</option>
+                      <option value ="Romania">Romania</option>
+                      <option value ="Russia">Russia</option>
+                      <option value ="Rwanda">Rwanda</option>
+                      <option value ="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                      <option value ="Saint Lucia">Saint Lucia</option>
+                      <option value ="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                      <option value ="Samoa">Samoa</option>
+                      <option value ="San Marino">San Marino</option>
+                      <option value ="Sao Tome and Principe">Sao Tome and Principe</option>
+                      <option value ="Saudi Arabia">Saudi Arabia</option>
+                      <option value ="Senegal">Senegal</option>
+                      <option value ="Serbia">Serbia</option>
+                      <option value ="Seychelles">Seychelles</option>
+                      <option value ="Sierra Leone">Sierra Leone</option>
+                      <option value ="Singapore">Singapore</option>
+                      <option value ="Slovakia">Slovakia</option>
+                      <option value ="Slovenia">Slovenia</option>
+                      <option value ="Solomon Islands">Solomon Islands</option>
+                      <option value ="Somalia">Somalia</option>
+                      <option value ="South Africa">South Africa</option>
+                      <option value ="Spain">Spain</option>
+                      <option value ="Sri Lanka">Sri Lanka</option>
+                      <option value ="Sudan">Sudan</option>
+                      <option value ="Sudan, South">Sudan, South</option>
+                      <option value ="Suriname">Suriname</option>
+                      <option value ="Sweden">Sweden</option>
+                      <option value ="Switzerland">Switzerland</option>
+                      <option value ="Syria">Syria</option>
+                      <option value ="Taiwan">Taiwan</option>
+                      <option value ="Tajikistan">Tajikistan</option>
+                      <option value ="Tanzania">Tanzania</option>
+                      <option value ="Thailand">Thailand</option>
+                      <option value ="Togo">Togo</option>
+                      <option value ="Tonga">Tonga</option>
+                      <option value ="Trinidad and Tobago">Trinidad and Tobago</option>
+                      <option value ="Tunisia">Tunisia</option>
+                      <option value ="Turkey">Turkey</option>
+                      <option value ="Turkmenistan">Turkmenistan</option>
+                      <option value ="Tuvalu">Tuvalu</option>
+                      <option value ="Uganda">Uganda</option>
+                      <option value ="Ukraine">Ukraine</option>
+                      <option value ="United Arab Emirates">United Arab Emirates</option>
+                      <option value ="United Kingdom">United Kingdom</option>
+                      <option value ="United States">United States</option>
+                      <option value ="Uruguay">Uruguay</option>
+                      <option value ="Uzbekistan">Uzbekistan</option>
+                      <option value ="Vanuatu">Vanuatu</option>
+                      <option value ="Vatican City">Vatican City</option>
+                      <option value ="Venezuela">Venezuela</option>
+                      <option value ="Vietnam">Vietnam</option>
+                      <option value ="Yemen">Yemen</option>
+                      <option value ="Zambia">Zambia</option>
+                      <option value ="Zimbabwe">Zimbabwe</option>
+ 
+                    </select>
+                  </br>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <span></br></span>
+        <div class="results-container" style="margin:1px;float:left; 
+        border-style: inset; width:100%; height:28rm; border-color:blue;">   
+
+          <div class="card2">
+              <h5 style="color:#1f94c0">Last Entries</h5> 
+          </div>  
+          <div class="card2">
+            <h5 style="color:#1f94c0">Most Popular 6 Countries costs</h5> 
+          </div>   
+           
+        </div>
+
+        <div class="results-container" style="margin:1px;float:left; 
+        border-style: inset; width:100%; height:28rm; border-color:blue;">
           
           <div class="card2">
             <div class="card-body2">
-              <h5 style="color:#1f94c0">Location</h5>
-              {% for dest in destinations %}
-                <h6>{{dest['location']}}<h6 class="ee">
-              {% endfor %}    
+              
+                <div class="row">
+                  <div class="col-4">
+                      <h5 style="color:#1f94c0"> City</h5>
+                      {% for dest in destinations %}
+                      <h6> {{dest['location']}}</h6>
+                      {% endfor %}  
+                  </div>
+                  <div class="col-4">
+                    <h5 style="color:#1f94c0"> Days</h5>
+                    {% for dest in destinations %}
+                      <h6> {{dest['days']}}</h6>
+                    {% endfor %}  
+                  </div>
+                  <div class="col-4">
+                    <h5 style="color:#1f94c0"> Country</h5>
+                    {% for dest in destinations %}
+                      <h6> {{dest['country']}}</h6>
+                    {% endfor %}  
+                  </div>
+                </div>   
             </div>
-          </div>  
-          <div class="card2">
-              <div class="card-body2">
-                <h5 style="color:#1f94c0">Number of days</h5>
-                {% for dest in destinations %}
-                  <h6>{{dest['days']}}<h6 class="ee"> 
-                {% endfor %} 
-              </div>
           </div>   
+          <div class="card2">
+            <div class="card-body2">
+              <div class="row">
+                <div class="col-4" >
+                  <div id="try">
+                    <h5 style="color:#1f94c0">Country</h5>
+                    {% for avg in averageB %}
+                      <h6>{{avg['country']}}</h6>
+                    {% endfor %}  
+                </div>
+                </div>
+                  <div class="col-4" >
+                    <div id="try1">
+                      <h5 style="color:#1f94c0">Count</h5>
+                      {% for avg in averageB %}
+                        <h6>{{avg['counta']}}</h6>
+                      {% endfor %}  
+                  </div>
+                </div>
+                  <div class="col-4">
+                      <h5 style="color:#1f94c0">Costs Ranking</h5>
+                      {% for avg in averageB %}
+                        <h6>{{avg['cost']}}</h6>
+                      {% endfor %}  
+                  </div>        
+                </div>
+            </div>
+            </div>
+          </div>   
+   
+    <span></br></span>
+    
+    <div class="results-container"   style="margin:1px; float:left; 
+        border-style: inset; width:100%; height:28rm; border-color:blue;">
         <div class="card2">
+          <h5 style="color:#1f94c0">Some stats</h5> 
+        </div>    
+        <div class="card2">
+          <h5 style="color:#1f94c0">Average days on country</h5> 
+        </div>
+    </div>  
+
+    <div class="results-container" style="margin:1px;float:left; 
+        border-style: inset; width:100%; height:28rm; border-color:blue;">
+    <div class="card2">
           <div class="card-body2">
-              <h6><h6 class="ee">
+                <h5 style="color:#1f94c0">Average number of days Total</h5>
+                <h6>{{average[0]['num days']}}</h6>
+                <h6 style="color:#71878f">Average Cost</h6>
+                <h6 id="er">{{average1[0]['costA']}}</h6>
+                <h6 style="color:#1f94c0">Number of days</h6>
+                <h6>{{average2[0]['country']}}</h6>
+                <h6>{{average2[0]['max']}}</h6>
           </div>
         </div>    
         <div class="card2">
             <div class="card-body2">
-                <h6><h6 class="ee"> 
+              <div class="row">
+                <div class="col-6">
+                    <h5 style="color:#1f94c0">Country</h5>
+                    {% for avg in averageC %}
+                    <h6>{{avg['country']}}</h6>
+                    {% endfor %}  
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                      <h5 style="color:#1f94c0">Days</h5>
+                      {% for avg in averageC %}
+                      <h6> {{avg['num days']}}</h6>
+                      {% endfor %}  
+                  </div>        
             </div>
-        </div>   
+          </div>   
+       </div>
       </div>
-  
-                <h1 style=color:purple;text-align:center-left;> Before you travel</h1>
+
+    </div>
+    <span></br></span>
+            </br>
+                <h1 style="color:purple;text-align:center-left;"> Before you travel</h1>
             
                 <div class="fe"> <p> Travels can be the most wonderful thing in the world,
                 but as everything uncertain involves some stress, to deal with this information is key. 
