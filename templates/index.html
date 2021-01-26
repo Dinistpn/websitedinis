@@ -20,8 +20,22 @@
            
             <div id="piechart"></div>
 
+            <div id="views"></div>
+
             <script type="text/javascript">
-     
+              /*var mySession = window.sessionStorage, pageCount;
+                window.addEventListener('load', function(){
+                  if(!mySession.getItem("pageCount")){
+                      mySession.setItem('pageCount', 1);
+                  } else {
+                      pageCount = mySession.getItem("pageCount");
+                      pageCount = pageCount + 1;
+                      mySession.setItem('pageCount', pageCount );
+                  }
+                  var ident= document.getElementById("views")
+                  ident.innerHTML=mySession.getItem("pageCount");
+                });*/
+        
               // Load google charts
               google.charts.load('current', {'packages':['corechart']});
               google.charts.setOnLoadCallback(drawChart);
