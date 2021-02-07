@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    
+    <!--display image and enable option to increase or decrease size-->
     <div class="row book-container">  
         <div class="col-sm-4">
          <p>
@@ -24,6 +24,7 @@
     
     
     <div>
+        <!--If user login enable option to submit review-->
         {% if session.username %}
         <!-- REVIEW FORM --> 
         <form method="POST" class="form-border" style="padding:5px; border-style: inset ; border-color:blue">
@@ -58,6 +59,7 @@
         <!-- REVIEW LIST -->
         {% endif %}
 
+        <!--Display previous reviews on the image-->
         <div id="userReviews">
             <h2></h2>
             {% for review in reviews %}
@@ -76,6 +78,8 @@
 
         </div>
     </div>
+
+    <!--Javascript to enable increase and decrease size of image-->
     <script>
     function zoomin(){
 

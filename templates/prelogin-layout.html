@@ -39,6 +39,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse" id="navbarNavDropdown" >
+            <!--If username login reveal this menu-->
             {% if session.username %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -64,6 +65,7 @@
                         </a>
                     </li>
                 </ul>
+            <!--If username not login reveal this menu-->
             {% else %}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -100,12 +102,14 @@
         
     </nav>
 
+    <!--Display flash messages-->
     {% if get_flashed_messages() %}
         <div class="alert alert-info text-center" role="alert">
             {{ get_flashed_messages() | join(" ") }}
         </div>
     {% endif %}
      
+    <!--Option to go back or forward on the website-->    
     <ul class="navbar-nav mr-auto">    
         <li class="nav-item">
             <button onclick="goBack()" style="background-color: #1f94c0; color:#e6e6ff;">
@@ -117,6 +121,7 @@
         </li>    
     </ul>
 
+    <!--Music menu-->
     <ul class="navbar-nav mr-auto">
             <audio id="audio1" src="static/myS3.mp3"></audio>
             <audio id="audio2" src="static/myS2.mp3"></audio>

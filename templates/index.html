@@ -36,7 +36,7 @@
                   ident.innerHTML=mySession.getItem("pageCount");
                 });*/
         
-              // Load google charts
+              // Load google static chart
               google.charts.load('current', {'packages':['corechart']});
               google.charts.setOnLoadCallback(drawChart);
 
@@ -69,6 +69,8 @@
                     <li> <a href="#sec3"> III Go to </a> The end </li>
                 
             </ol>
+
+            <!--Form about user travels-->
             <h6> Let us know your favourite vactions locations and how many days you stayed</h6>
             <form method="POST" class="form-border" style="padding:2px; border-style: inset ; border-color:blue">
                   <div class="form-row">
@@ -306,7 +308,7 @@
           
           <div class="card2">
             <div class="card-body2">
-              
+                <!--Display previous data regarding users travels-->
                 <div class="row">
                   <div class="col-4">
                       <h5 style="color:#1f94c0"> City</h5>

@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import datetime
 
+#connect with database
 app = Flask(__name__)
 
 if not os.getenv('DATABASE_URL', None):
@@ -36,6 +37,7 @@ def load_user(id):
 @app.route("/", methods=['GET', 'POST'])    
 def index():
 
+    #If user submit form, upload on database
     if request.method == "POST":
         """ Show search box """
         location=request.form.get("location")
@@ -53,6 +55,8 @@ def index():
 
         # Redirect user to index
         return redirect(request.referrer)
+    
+    #Get data from database, table destinations
     dest=exe.execute('select * from destinations order by id Desc LIMIT 6;')
     destinations= dest.fetchall()
     
@@ -82,6 +86,7 @@ def index():
     from destinations GROUP by country ORDER by "num days" DESC LIMIT 6;')
     averageC= avgC.fetchall()                            
     
+    #return template with loaded data from database
     return render_template("index.html", destinations=destinations, average=average, 
     average1=average1, average2=average2, averageA=averageA, averageB=averageB, averageC=averageC)
 
@@ -89,8 +94,8 @@ def index():
 def restrict():
 
     """ Show search box """
-    #username = session.get('username')
-    
+
+    #Get data from database table gallery and reviews
     lands=exe.execute("select g.landscape, COUNT(r1.comment)as comments,\
                 COUNT(r1.rating) as ratings\
                 from gallery g\
@@ -123,27 +128,28 @@ def restrict():
                     COUNT(r1.rating) DESC LIMIT 1;")
     weather=weath.fetchall()
     
+    #return template with loaded data from database
     return render_template("restrict.html", landscape=landscape, maxP=maxP, 
     recent=recent, weather=weather)
 
 @app.route("/draws", methods=['GET', 'POST'])
 def draws():  
     
-    #username = session.get('username')
-        
+    #Return template with draws
+      
     return render_template("draws.html", )
     
 @app.route("/results", methods=['GET', 'POST'])
 def results():
 
-    #username = session.get('username')
-    
+    #Get search results
+
     if not request.args.get("image"):
         return render_template("error.html", message="you must provide a image.")
 
     query = "%" + request.args.get("image") + "%"
 
-    #query = query.idphoto()#
+    #Get search results
     
     rows = exe.execute("SELECT idphoto, location, url, weather, landscape FROM gallery WHERE \
                         idphoto LIKE :query OR \
@@ -153,7 +159,7 @@ def results():
                         ORDER by location",
                         {"query": query})
     
-    # gallery not founded
+    # if nothing found on search
     if rows.rowcount == 0:
         return render_template("error.html", message="we can't find with that description.")
     
@@ -168,42 +174,42 @@ def results():
 def registration():
     session.clear()
     
-    # User reached route via POST (as by submitting a form via POST)
+    # User submited the form for registration
     if request.method == "POST":
 
-        # Ensure username was submitted
+        # Username was submitted
         if not request.form.get("username"):
             return render_template("error.html", message="must provide username")
 
-        # Query database for username
+        # Get database for username
         userCheck = exe.execute("SELECT * FROM users WHERE username = :username",
                           {"username":request.form.get("username")}).fetchone()
 
-        # Check if username already exist
+        # Confirm if username already exist
         if userCheck:
             return render_template("error.html", message="username already exist")
 
-        # Ensure password was submitted
+        # Check if password was submitted
         elif not request.form.get("password"):
             return render_template("error.html", message="must provide password")
 
-        # Ensure confirmation wass submitted 
+        # Ensure confirmation for password was submitted 
         elif not request.form.get("confirmation"):
             return render_template("error.html", message="must confirm password")
 
-        # Check passwords are equal
+        # Check if passwords are the same
         elif not request.form.get("password") == request.form.get("confirmation"):
             return render_template("error.html", message="passwords didn't match")
         
-        # Hash user's password to store in DB
+        # Encrypt password to store on database
         
         hashed_pass = generate_password_hash(request.form.get("password"), method='pbkdf2:sha512', salt_length=8)
-        # Insert register into DB
+        # Insert user data into database
         exe.execute("INSERT INTO users (username, password) VALUES (:username, :password)",
                             {"username":request.form.get("username"), 
                              "password":hashed_pass})
 
-        # Commit changes to database
+        # Save changes to database
         exe.commit()
 
         flash('Account created', 'info')
@@ -221,57 +227,58 @@ def login():
 
     username = request.form.get("username")
 
-    # User reached route via POST (as by submitting a form via POST)
+    # User submited form Login
     if request.method == "POST":
 
-        # Ensure username was submitted
+        # Check if username was submitted
         if not request.form.get("username"):
             return render_template("error.html", message="must provide username")
 
-        # Ensure password was submitted
+        # Check if password was submitted
         elif not request.form.get("password"):
             return render_template("error.html", message="must provide password")
 
-        # Query database for username (http://zetcode.com/db/sqlalchemy/rawsql/)
-        # https://docs.sqlalchemy.org/en/latest/core/connections.html#sqlalchemy.engine.ResultProxy
+        # Get data for user
         rows = exe.execute("SELECT * FROM users WHERE username = :username",
                             {"username": username})
         
         result = rows.fetchone()
 
-        # Ensure username exists and password is correct
+        # Check if username and password
         if result == None or not check_password_hash(result[2], request.form.get("password")):
             return render_template("error.html", message="invalid username and/or password")
 
-        # Remember which user has logged in
+        # Save username on session
         session["username"] = request.form.get("username")
 
-        # Redirect user to home page
+        # Redirect user to search page
         return redirect("/restrict")
 
-    # User reached route via GET (as by clicking a link or via redirect)
+    # User reached via GET return template to login
     else:
         return render_template("login.html")
 
 @app.route("/logout", methods=['GET', 'POST'])
 def loggedout():
+
+    #remove username from session
     session.pop('username', None)
+    #session.clear()
     session.clear()
     flash('You have been logged out', 'success')
+    #return user to login page
     return redirect(url_for('login'))
     
 @app.route("/image/<idphoto>", methods=['GET', 'POST']) 
 def image(idphoto):
     
+    #Get session username
     username = session.get('username')
         
     timeDate = datetime.now()
     #timeDate = now.strftime("%d/%m/%Y,' ',%H:%M:%S")
     
     if request.method == "POST":
-        
-        
-        # Save current user info
         
         # Fetch form data
         rating = request.form.get("rating")
@@ -290,13 +297,13 @@ def image(idphoto):
                     {"username": username,
                      "idphoto": idphoto})
 
-        # A review already exists
+        # Check if the same user made a review previously on the same image
         if row2.rowcount == 1:
             
             flash('You already submitted a review for this book', 'warning')
             return redirect("/image/" + idphoto)
 
-        # Convert to save into DB
+        # Convert to save into database
         rating = int(rating)
 
         exe.execute("INSERT INTO reviews (timeDate, username,  comment, idphoto, rating) VALUES \
@@ -307,23 +314,24 @@ def image(idphoto):
                     "idphoto": idphoto, 
                     "rating": rating})
 
-        # Commit transactions to DB and close the connection
+        # Save transactions to database and close the connection
         exe.commit()
 
         flash('Review submitted!', 'info')
 
         return redirect("/image/" + idphoto)
     
-    # Take the book ISBN and redirect to his page (GET)
+    # Get image Id and redirect to the page of the image
     else:
-               
+
+
         rows = exe.execute("SELECT idphoto, location, url, weather, landscape FROM gallery WHERE \
                         idphoto = :idphoto",
                         {"idphoto": idphoto})
                         
         gallery = rows.fetchall()
         
-        # to_char(time, 'DD Mon YY - HH24:MI:SS') as time \
+        #Get reviews and order by time
         results = exe.execute("SELECT r.idphoto, r.timeDate, r.username, r.comment, r.rating \
                             FROM users u\
                             JOIN reviews r\
@@ -332,7 +340,6 @@ def image(idphoto):
                             ORDER BY r.timeDate desc",
                             {"idphoto": idphoto})
                             
-        # ORDER BY time
         reviews = results.fetchall()
         
         return render_template("image.html", gallery=gallery, username=session.get('username'), reviews=reviews)
